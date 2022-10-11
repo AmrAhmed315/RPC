@@ -1,9 +1,76 @@
-//masgate paymeny gateway integration
-//version 2.0.0
 syntax = "proto2";
-import "date.proto";
-option go_package = "github.com/AmrAhmed315/RPC/main/test;testpb";
-package masgate;
+
+//option go_package = "../pb;pb";
+package main.test;
+
+
+service MasPaymentGateway {
+      rpc Ping(Empty) returns (Version) {}
+      rpc Inquiry(InquiryRequest) returns (InquiryResponse) {}
+      rpc PaymentNotify(PaymentRequest) returns (PaymentResponce) {}
+      rpc AddReading  (AddReadingRq) returns (AddReadingRs) {} //used with limited providers
+}
+
+message InquiryRequest {
+    required string ProviderId=1;
+    required string AccountNumber=2;//customer account number  
+    optional bool IncludeAllBills=3;  
+    optional bool ISRECEIPTS=4;
+    optional int64 SITE_CODE = 5;
+}
+
+
+message InquiryResponse {
+    required string ProviderId=1;
+    required string AccountNumber=2;//customer account number
+    repeated BillInfo Bills=3;
+    required STATUS Status=4;
+    optional string StatusDescription=5;
+    optional bool ISRECEIPTS =6;
+}
+
+message PaymentRequest {
+    required string ProviderId=1;
+    required string AccountNumber=2;//customer account number
+    required string BillNumber=3;//bill ref number
+    required Amount Amount=4;   
+    required string TransId=5;
+    optional bool IsRetry=6;
+    
+    optional bool ISRECEIPTS =8;
+    optional int64 SITE_CODE =9;
+}
+
+message PaymentResponce {
+    required string ProviderId=1;
+    required string AccountNumber=2;//customer account number
+    required string BillNumber=3;//bill ref number
+    required string TransId=4;
+    required STATUS Status=5;
+    optional string StatusDescription=6;
+    optional string MasTransId=7;
+    optional int64 SITE_CODE=8;
+}
+
+message AddReadingRq{
+    required string BillingAccount = 1;
+    required int64 CurrRead = 2;
+ 
+    optional string Note = 4;
+    optional string ReadingRefNumber =5;
+    optional int64 SITE_CODE = 6;
+}
+
+
+message AddReadingRs {
+    required string BillingAccount = 1;
+    optional string ReadingRefNumber =2;
+    required bool IsAccepted=3;
+    optional string Message=4;
+    optional int64 SITE_CODE = 5;
+}
+
+
 
 enum STATUS   {                                       
 	Success                                                  = 200;
@@ -27,120 +94,26 @@ enum STATUS   {
 
 
 
-enum CUREENCY {
-    EGP                    = 0;
-}
+enum CUREENCY { EGP = 0;}
 
-
-message InquiryRequest {
-    required string ProviderId=1;
-    required string AccountNumber=2;//customer account number  
-    optional bool IncludeAllBills=3;  
-    optional bool ISRECEIPTS=4;
-    optional int64 SITE_CODE = 5;
-}
-
-message PaymentRange{
+message PaymentRange {
     optional double Upper =1;
-    optional double Lower =2;    
-}
+    optional double Lower =2; }
 
 
-message Amount{
+message Amount {
     required  double Amount=1;
-    required  CUREENCY Currency=2;    
-}
+    required  CUREENCY Currency=2; }
 
 
-message ExtraInfo{
+message ExtraInfo {
     required  string Key=1;
-    required  string Value=2;    
-}
+    required  string Value=2; }
 
 
-message BillInfo {
-    required string AccountNumber=1;//customer account number
-    required string BillNumber=2;//bill ref number
-    required central.types.MasDateTime IssueDate=5;
-    required Amount DueAmount=7;    
-    optional PaymentRange Range=8;
-    ///
-    required string Surname=9;
-    optional int64 Consump=10;
-    optional int64 PrReading=11;
-    optional int64 CrReading=12;
-    optional string CalcType=13;
-    optional string Address=14;
-    ////
-    repeated ExtraInfo ExtraInfo=15;
-    optional int64 SITE_CODE =16;
-}
+message Version { required string Version=1; }
 
 
-message InquiryResponse {
-    required string ProviderId=1;
-    required string AccountNumber=2;//customer account number
-    repeated BillInfo Bills=3;
-    required STATUS Status=4;
-    optional string StatusDescription=5;
-    optional bool ISRECEIPTS =6;
-}
+message Empty{}
 
 
-message PaymentRequest {
-    required string ProviderId=1;
-    required string AccountNumber=2;//customer account number
-    required string BillNumber=3;//bill ref number
-    required Amount Amount=4;   
-    required string TransId=5;
-    optional bool IsRetry=6;
-    required central.types.MasDateTime CollectionDate=7;
-    optional bool ISRECEIPTS =8;
-    optional int64 SITE_CODE =9;
-}
-
-
-message PaymentResponce {
-    required string ProviderId=1;
-    required string AccountNumber=2;//customer account number
-    required string BillNumber=3;//bill ref number
-    required string TransId=4;
-    required STATUS Status=5;
-    optional string StatusDescription=6;
-    optional string MasTransId=7;
-    optional int64 SITE_CODE=8;
-}
-
-message Version{
-    required string Version=1;
-}
-
-
-message Empty{
-
-}
-
-message AddReadingRq{
-    required string BillingAccount = 1;
-    required int64 CurrRead = 2;
-    required central.types.MasDateTime StampDate = 3;
-    optional string Note = 4;
-    optional string ReadingRefNumber =5;
-    optional int64 SITE_CODE = 6;
-}
-
-
-message AddReadingRs {
-    required string BillingAccount = 1;
-    optional string ReadingRefNumber =2;
-    required bool IsAccepted=3;
-    optional string Message=4;
-    optional int64 SITE_CODE = 5;
-}
-
-service MasPaymentGateway {
-      rpc Ping(Empty) returns (Version) {}
-      rpc Inquiry(InquiryRequest) returns (InquiryResponse) {}
-      rpc PaymentNotify(PaymentRequest) returns (PaymentResponce) {}
-      rpc AddReading  (AddReadingRq) returns (AddReadingRs) {} //used with limited providers
-}
