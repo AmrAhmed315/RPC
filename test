@@ -117,3 +117,20 @@ message Version { required string Version=1; }
 message Empty{}
 
 
+message BillInfo {
+    required string AccountNumber=1;//customer account number
+    required string BillNumber=2;//bill ref number
+    required central.types.MasDateTime IssueDate=5;
+    required Amount DueAmount=7;    
+    optional PaymentRange Range=8;
+    ///
+    required string Surname=9;
+    optional int64 Consump=10;
+    optional int64 PrReading=11;
+    optional int64 CrReading=12;
+    optional string CalcType=13;
+    optional string Address=14;
+    ////
+    repeated ExtraInfo ExtraInfo=15;
+    optional int64 SITE_CODE =16;
+}
