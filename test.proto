@@ -1,14 +1,27 @@
 syntax = "proto2";
 
 //option go_package = "../pb;pb";
-package masgate;
 
+package central.types;
+
+//option go_package = "github.com/mas-soft/central/types;types";
+
+
+
+
+message MasDateTime {
+  // Represents seconds of UTC time since Unix epoch
+  // 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+  // 9999-12-31T23:59:59Z inclusive.
+  //RFC3339     = "2006-01-02T15:04:05Z07:00"
+  required string datetime = 1; //RFC3339
+}
 
 
 service MasPaymentGateway {
       rpc Ping(Empty) returns (Version) {}
       rpc Inquiry(InquiryRequest) returns (InquiryResponse) {}
-      rpc PaymentNotify(PaymentRequest) returns (PaymentResponce) {}       
+      rpc PaymentNotify(PaymentRequest) returns (PaymentResponce) {}
       rpc AddReading  (AddReadingRq) returns (AddReadingRs) {} //used with limited providers
 }
 
@@ -18,7 +31,7 @@ message InquiryRequest {
     optional bool IncludeAllBills=3;  
     optional bool ISRECEIPTS=4;
     optional int64 SITE_CODE = 5;
-}
+} 
 
 
 message InquiryResponse {
@@ -56,7 +69,7 @@ message PaymentResponce {
 message AddReadingRq{
     required string BillingAccount = 1;
     required int64 CurrRead = 2;
- 
+    required central.types.MasDateTime StampDate = 3;
     optional string Note = 4;
     optional string ReadingRefNumber =5;
     optional int64 SITE_CODE = 6;
@@ -121,7 +134,7 @@ message Empty{}
 message BillInfo {
     required string AccountNumber=1;//customer account number
     required string BillNumber=2;//bill ref number
-    
+    required central.types.MasDateTime IssueDate=5;
     required Amount DueAmount=7;    
     optional PaymentRange Range=8;
     ///
@@ -130,7 +143,7 @@ message BillInfo {
     optional int64 PrReading=11;
     optional int64 CrReading=12;
     optional string CalcType=13;
-    optional string Address=14; 
+    optional string Address=14;
     ////
     repeated ExtraInfo ExtraInfo=15;
     optional int64 SITE_CODE =16;
