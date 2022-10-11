@@ -2,7 +2,7 @@ syntax = "proto2";
 
 //option go_package = "../pb;pb";
 package main.test;
-package central.types;
+
 
 //option go_package = "github.com/mas-soft/central/types;types";
 
