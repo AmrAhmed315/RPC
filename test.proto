@@ -121,7 +121,7 @@ message Empty{}
 message BillInfo {
     required string AccountNumber=1;//customer account number
     required string BillNumber=2;//bill ref number
-    required central.types.MasDateTime IssueDate=5;
+    
     required Amount DueAmount=7;    
     optional PaymentRange Range=8;
     ///
