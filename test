@@ -2,7 +2,7 @@
 //version 2.0.0
 syntax = "proto2";
 import "date.proto";
-//option go_package = "https://github.com/AmrAhmed315/RPC/edit/main/.test";
+option go_package = "github.com/AmrAhmed315/RPC/main/test;testpb";
 package masgate;
 
 enum STATUS   {                                       
