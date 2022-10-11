@@ -8,7 +8,7 @@ package masgate;
 service MasPaymentGateway {
       rpc Ping(Empty) returns (Version) {}
       rpc Inquiry(InquiryRequest) returns (InquiryResponse) {}
-      rpc PaymentNotify(PaymentRequest) returns (PaymentResponce) {}
+      rpc PaymentNotify(PaymentRequest) returns (PaymentResponce) {}       
       rpc AddReading  (AddReadingRq) returns (AddReadingRs) {} //used with limited providers
 }
 
