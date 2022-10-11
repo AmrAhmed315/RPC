@@ -31,7 +31,7 @@ message InquiryRequest {
     optional bool IncludeAllBills=3;  
     optional bool ISRECEIPTS=4;
     optional int64 SITE_CODE = 5;
-}
+} 
 
 
 message InquiryResponse {
